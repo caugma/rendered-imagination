@@ -1,6 +1,7 @@
 # ─────────────────────────────────────────────
 #  작품 정보. "이름: 값" 형식이에요. 콜론(:) 뒤에 한 칸 띄워요.
 #  이미지와 PDF 파일은 이 파일과 같은 번호의 폴더(works/05/)에 올려요.
+#  # 으로 시작하는 줄은 메모라서 사이트에 나오지 않아요.
 # ─────────────────────────────────────────────
 
 title: [Work Title]
@@ -12,19 +13,24 @@ affiliation: [Affiliation]
 category: Image Series
 
 year: 2026
-format: [e.g. Single-channel video, 4K, color, sound]
-duration: [e.g. 4 min 30 s]
+format: [e.g. Series of 10 digital images]
 technologies: [Tool 1], [Tool 2], [Tool 3]
 
-# 목록 카드에 쓰는 이미지 (비우면 main_image를 씀)
-thumbnail:
-# 작품 페이지 맨 위 큰 이미지
-main_image: main.jpg
-main_caption: [Caption — e.g. a still from the work]
-# 영상 주소 (YouTube 또는 Vimeo). 넣으면 큰 이미지 자리에 영상이 나와요.
-video:
-# 추가 이미지 (쉼표로 구분, 비워도 돼요)
-images: 02.jpg, 03.jpg, 04.jpg
+# 이미지 시리즈: 작품 페이지 맨 위에 캐러셀로 한 장씩 보여줘요.
+# 한 줄에 한 장, "- 파일이름 | 이미지 제목" 형식. 제목이 없으면 "| 제목" 부분을 지워요.
+# 순서대로 보여주고, 첫 번째 이미지가 목록 카드에도 쓰여요.
+images:
+- 01.jpg | [Image Title 1]
+- 02.jpg | [Image Title 2]
+- 03.jpg | [Image Title 3]
+- 04.jpg | [Image Title 4]
+- 05.jpg | [Image Title 5]
+- 06.jpg | [Image Title 6]
+- 07.jpg | [Image Title 7]
+- 08.jpg | [Image Title 8]
+- 09.jpg | [Image Title 9]
+- 10.jpg | [Image Title 10]
+
 # 초록 PDF 파일 이름 (비우면 버튼이 숨겨져요)
 abstract_pdf:
 ---

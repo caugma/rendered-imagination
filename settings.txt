@@ -36,6 +36,7 @@ logo_background: white
 accent_color: #FF5A36
 pattern_seed: 7
 ---
+# 아래 두 소제목(## About the exhibition, ## Conference presentation)은 그대로 두고 문단만 고쳐요.
 
 ## About the exhibition
 
@@ -43,6 +44,6 @@ Rendered Imagination presents creative works produced with broadcasting and medi
 
 Organized as a special session of IWAIT 2027, the exhibition looks at how the integration of technology and creative practice expands the possibilities of media expression across three forms: image series, moving image and video, and interactive and immersive media.
 
-## Live presentation session
+## Conference presentation
 
 The creators present their works in person as part of the IWAIT 2027 conference program, covering the technologies and production process behind each piece.

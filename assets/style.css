@@ -49,7 +49,7 @@ img { display: block; max-width: 100%; }
 .btn:hover { color: var(--bg); background: #fff; }
 .hero .btn { margin-top: 32px; }
 .pattern { flex: 0 1 544px; width: 544px; max-width: 100%; aspect-ratio: 544 / 416; }
-.pattern canvas { width: 100%; height: 100%; display: block; }
+.pattern canvas { width: 100%; height: 100%; display: block; touch-action: pan-y; cursor: crosshair; }
 
 /* Facts strip */
 .facts { padding-top: 28px; padding-bottom: 28px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px 40px; }
@@ -60,7 +60,6 @@ img { display: block; max-width: 100%; }
 .works { padding-top: 88px; padding-bottom: 96px; }
 .works-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 32px; }
 .works-head h2 { margin: 0; font-size: 48px; font-weight: 800; letter-spacing: -0.02em; }
-.works-head .count { margin-left: 16px; font-family: var(--mono); font-size: 16px; color: var(--muted); }
 .filters { display: flex; flex-wrap: wrap; gap: 8px; }
 .filters button { min-height: 44px; padding: 0 16px; font: inherit; font-size: 15px; cursor: pointer; border: 1px solid var(--line-strong); background: transparent; color: var(--text); }
 .filters button[aria-pressed="true"] { border-color: var(--text); background: var(--text); color: var(--bg); font-weight: 700; }
@@ -115,13 +114,36 @@ img { display: block; max-width: 100%; }
 .byline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
 .byline b { font-size: 24px; font-weight: 500; }
 .byline span { font-size: 18px; color: var(--muted); }
-.work-year { font-family: var(--mono); font-size: 15px; color: var(--muted); }
 .media { margin: 0; }
 .media .frame { aspect-ratio: 16 / 9; background: var(--surface); border: 1px solid var(--line); position: relative; overflow: hidden; }
 .media .frame img { width: 100%; height: 100%; object-fit: contain; background: #000; }
 .media .frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; color-scheme: normal; }
 .media .ph { align-items: center; justify-content: center; }
-.media figcaption { margin-top: 12px; font-size: 15px; color: var(--muted); }
+
+/* Image-series carousel */
+.stage { background: #000; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.stage .slot { position: absolute; inset: 0; }
+.stage .slot img { width: 100%; height: 100%; object-fit: contain; -webkit-user-drag: none; }
+.nav-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(242, 241, 236, 0.25); background: rgba(14, 15, 18, 0.72); color: var(--text); cursor: pointer; }
+.nav-btn:hover { background: rgba(14, 15, 18, 0.92); border-color: var(--text); }
+.nav-btn.prev { left: 16px; }
+.nav-btn.next { right: 16px; }
+.nav-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: square; }
+.series-bar { margin-top: 14px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; }
+.series-count { font-family: var(--mono); font-size: 15px; color: var(--accent); }
+.series-title { font-size: 17px; color: var(--text-2); }
+.thumbs { margin-top: 14px; display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
+.thumbs button { flex: 0 0 auto; width: 96px; aspect-ratio: 4 / 3; padding: 0; border: 1px solid var(--line); background: var(--surface); position: relative; overflow: hidden; cursor: pointer; opacity: 0.55; transition: opacity .2s; }
+.thumbs button:hover { opacity: 0.85; }
+.thumbs button[aria-current="true"] { opacity: 1; outline: 2px solid var(--accent); outline-offset: -2px; }
+.thumbs img { width: 100%; height: 100%; object-fit: cover; }
+.thumbs .ph { padding: 6px; font-size: 11px; }
+@media (max-width: 560px) {
+  .nav-btn { width: 44px; height: 44px; }
+  .nav-btn.prev { left: 8px; }
+  .nav-btn.next { right: 8px; }
+  .thumbs button { width: 72px; }
+}
 .work-body { padding-top: 72px; padding-bottom: 72px; display: flex; flex-wrap: wrap; gap: 48px 72px; }
 .work-text { flex: 999 1 560px; min-width: 0; }
 .work-text h2 { margin: 48px 0 16px; font-family: var(--mono); font-size: 14px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
