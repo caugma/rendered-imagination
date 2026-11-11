@@ -1,0 +1,42 @@
+# ─────────────────────────────────────────────
+#  작품 정보. "이름: 값" 형식이에요. 콜론(:) 뒤에 한 칸 띄워요.
+#  이미지와 PDF 파일은 이 파일과 같은 번호의 폴더(works/01/)에 올려요.
+# ─────────────────────────────────────────────
+
+title: [Work Title]
+artist: [Artist Name]
+affiliation: [Affiliation]
+
+# 다음 셋 중 하나를 그대로 복사해서 쓰세요:
+#   Image Series  /  Moving Image / Video  /  Interactive / Immersive Media
+category: Moving Image / Video
+
+year: 2026
+format: [e.g. Single-channel video, 4K, color, sound]
+duration: [e.g. 4 min 30 s]
+technologies: [Tool 1], [Tool 2], [Tool 3]
+
+# 목록 카드에 쓰는 이미지 (비우면 main_image를 씀)
+thumbnail:
+# 작품 페이지 맨 위 큰 이미지
+main_image: main.jpg
+main_caption: [Caption — e.g. a still from the work]
+# 영상 주소 (YouTube 또는 Vimeo). 넣으면 큰 이미지 자리에 영상이 나와요.
+video:
+# 추가 이미지 (쉼표로 구분, 비워도 돼요)
+images: 02.jpg, 03.jpg, 04.jpg
+# 초록 PDF 파일 이름 (비우면 버튼이 숨겨져요)
+abstract_pdf:
+---
+
+## Work Description
+
+[Content, format and the main visual or experiential features of the work. Two or three short paragraphs.]
+
+## Media Technology and Production
+
+[Broadcasting and media technologies, AI tools, software and production methods used in the work.]
+
+## Presentation and Experience
+
+[How the work is presented, exhibited or experienced — including how to view it online.]

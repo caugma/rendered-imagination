@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rendered Imagination — IWAIT 2027</title>
+<meta name="description" content="Rendered Imagination — an online exhibition of creative works with technology, a special session of IWAIT 2027.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip" href="#works">Skip to works</a>
+
+<header class="site-header rule-b">
+  <div class="wrap">
+    <a class="brand" href="index.html"><b id="brand-conf">IWAIT 2027</b><span id="brand-title">Rendered Imagination</span></a>
+    <nav class="nav" aria-label="Main">
+      <a href="#works">Works</a>
+      <a href="#about">About</a>
+      <a href="#live">Live Session</a>
+      <a class="ext" id="nav-conf" href="#" target="_blank" rel="noopener">IWAIT 2027 ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="wrap hero">
+    <div class="hero-text">
+      <span class="tag" id="hero-tag">IWAIT 2027 · SPECIAL SESSION</span>
+      <span class="subtitle" id="hero-sub">Creative Works with Technology · Online Exhibition</span>
+      <h1 id="hero-title">Rendered<br>Imagination</h1>
+      <p id="hero-intro"></p>
+      <a class="btn" href="#works">View the works <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="pattern" aria-hidden="true"><canvas id="pattern"></canvas></div>
+  </section>
+
+  <section class="rule-t rule-b" aria-label="Key dates">
+    <div class="wrap facts">
+      <div class="fact"><span class="eyebrow">Online exhibition</span><strong id="f-exhibit"></strong></div>
+      <div class="fact"><span class="eyebrow">Live presentation session</span><strong id="f-session"></strong></div>
+      <div class="fact"><span class="eyebrow">Venue</span><strong id="f-venue"></strong></div>
+    </div>
+  </section>
+
+  <section class="wrap works" id="works" aria-labelledby="works-title">
+    <div class="works-head">
+      <div><h2 id="works-title" style="display:inline">Works</h2><span class="count" id="count"></span></div>
+      <div class="filters" role="group" aria-label="Filter by category">
+        <button type="button" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" data-filter="image" aria-pressed="false">Image Series</button>
+        <button type="button" data-filter="video" aria-pressed="false">Moving Image / Video</button>
+        <button type="button" data-filter="interactive" aria-pressed="false">Interactive / Immersive</button>
+      </div>
+    </div>
+    <div class="grid" id="grid" aria-live="polite"></div>
+  </section>
+
+  <section class="rule-t" id="about">
+    <div class="wrap split">
+      <h2>About the exhibition</h2>
+      <div class="body prose" id="about-body"></div>
+    </div>
+  </section>
+
+  <section class="rule-t" id="live">
+    <div class="wrap split">
+      <h2>Live presentation session</h2>
+      <div class="body">
+        <div class="session-grid">
+          <div><span class="eyebrow">Date</span><strong id="s-date"></strong><span id="s-time"></span></div>
+          <div><span class="eyebrow">Venue</span><strong id="s-venue"></strong><span id="s-venue2"></span></div>
+        </div>
+        <div class="prose" id="live-body"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer rule-t">
+  <div class="wrap">
+    <div class="logo-groups" id="logo-groups"></div>
+    <span class="fine" id="foot-line"></span>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+<script>Exhibition.home();</script>
+</body>
+</html>
