@@ -18,7 +18,7 @@ format: Single-channel video, FHD (1920×1080), color, stereo sound, 6 min 32 se
 technologies: Claude, Blender, Model Context Protocol (MCP)
 
 # 영상 주소 (YouTube 또는 Vimeo). 작품 페이지 맨 위에 영상이 나와요.
-video:
+video: https://youtu.be/YG3DSbVQtDs
 # 목록 카드 이미지. 영상이 있어도 꼭 넣어요. 영상이 없으면 페이지 맨 위에도 이 이미지가 나와요.
 main_image: main.jpg
 # 추가 이미지 (쉼표로 구분, 비우면 "More images"가 숨겨져요)
