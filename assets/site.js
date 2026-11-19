@@ -144,6 +144,11 @@
     }
     return null;
   }
+  // a still for the video's thumbnail button (YouTube only; Vimeo falls back to the main image)
+  function videoThumb(url) {
+    var m = (url || '').match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{6,})/);
+    return m ? 'https://i.ytimg.com/vi/' + m[1] + '/hqdefault.jpg' : '';
+  }
   // the Korean title, unless it just repeats the English one
   function koTitle(f) {
     var ko = (f.title_ko || '').trim();
@@ -275,7 +280,11 @@
     var thumbs = el('div', { class: 'thumbs', role: 'group', 'aria-label': 'All images in the series' });
     var buttons = entries.map(function (e, i) {
       var b = el('button', { type: 'button', 'aria-label': 'Image ' + (i + 1) + (e.title ? ': ' + e.title : '') });
-      b.appendChild(image(dir + e.file, '', '', pad(i + 1)));
+      if (e.video) {
+        b.setAttribute('aria-label', 'Video' + (e.title ? ': ' + e.title : ''));
+        b.appendChild(e.thumb ? image(e.thumb, '', '', '') : placeholder('Video', ''));
+        b.appendChild(el('span', { class: 'play-badge', 'aria-hidden': 'true' }));
+      } else b.appendChild(image(dir + e.file, '', '', pad(i + 1)));
       b.addEventListener('click', function () { show(i); });
       thumbs.appendChild(b);
       return b;
@@ -285,15 +294,17 @@
     function show(i) {
       cur = (i + total) % total;
       var e = entries[cur];
-      slot.innerHTML = '';
-      slot.appendChild(image(dir + e.file, e.title || ((workTitle || 'Image') + ' ' + (cur + 1)), 'Image coming soon', pad(cur + 1), true));
+      slot.innerHTML = '';   // leaving a video slide removes the player, which stops it
+      stage.classList.toggle('is-video', !!e.video);
+      if (e.video) slot.appendChild(el('iframe', { src: e.video, title: (workTitle || 'Work') + ' — video', allow: 'autoplay; fullscreen; picture-in-picture', allowfullscreen: '' }));
+      else slot.appendChild(image(dir + e.file, e.title || ((workTitle || 'Image') + ' ' + (cur + 1)), 'Image coming soon', pad(cur + 1), true));
       counter.textContent = total > 1 ? pad(cur + 1) + ' / ' + pad(total) : '';
       title.textContent = e.title || '';
       bar.hidden = !counter.textContent && !title.textContent;
       buttons.forEach(function (b, k) { b.setAttribute('aria-current', k === cur ? 'true' : 'false'); });
       var tb = buttons[cur];
       thumbs.scrollTo({ left: tb.offsetLeft - (thumbs.clientWidth - tb.offsetWidth) / 2, behavior: 'smooth' });
-      [cur + 1, cur - 1].forEach(function (k) { var x = entries[(k + total) % total]; if (x) new Image().src = dir + x.file; });
+      [cur + 1, cur - 1].forEach(function (k) { var x = entries[(k + total) % total]; if (x && x.file) new Image().src = dir + x.file; });
     }
     prev.addEventListener('click', function () { show(cur - 1); });
     next.addEventListener('click', function () { show(cur + 1); });
@@ -460,17 +471,14 @@
         text('w-title-ko', koTitle(f));
         if (!koTitle(f)) $('#w-title-ko').remove();
 
-        // Top of the page: a video if there is one, then every image in one carousel.
-        // Image series: the images. Other works: the main image first (unless a video
-        // stands in for it), then the more images.
+        // Top of the page: one carousel — the main image, then the more images,
+        // then the video last (if any). An image series shows its images, then the video.
         var media = $('#w-media'), embed = videoEmbed(f.video), entries = imageEntries(f.images);
-        if (!isSeries && f.main_image && !embed) entries.unshift({ file: f.main_image, title: '' });
+        if (!isSeries && f.main_image) entries.unshift({ file: f.main_image, title: '' });
+        if (embed) entries.push({ video: embed, thumb: videoThumb(f.video) || (f.main_image ? dir + f.main_image : ''), title: '' });
         media.innerHTML = '';
-        if (embed) {
-          media.appendChild(el('div', { class: 'frame' }, [el('iframe', { src: embed, title: (f.title || 'Work') + ' — video', allow: 'autoplay; fullscreen; picture-in-picture', loading: 'lazy' })]));
-        }
         if (entries.length) media.appendChild(carousel(entries, dir, f.title));
-        else if (!embed) media.appendChild(el('div', { class: 'frame' }, [placeholder('Main image coming soon')]));
+        else media.appendChild(el('div', { class: 'frame' }, [placeholder('Main image coming soon')]));
 
         $('#w-text').innerHTML = markdown(w.body);
 

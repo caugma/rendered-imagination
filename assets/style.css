@@ -217,3 +217,9 @@ img { display: block; max-width: 100%; }
 .conf-link { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
 .conf-link:hover { color: var(--accent); }
 .eyebrow strong { color: var(--text); font-weight: 600; }
+
+/* video slide in the carousel */
+.stage .slot iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+.thumbs button { position: relative; }
+.play-badge { position: absolute; left: 50%; top: 50%; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; background: rgba(14,15,19,0.75); border: 1px solid rgba(242,241,236,0.6); }
+.play-badge::after { content: ''; position: absolute; left: 11px; top: 8px; border-style: solid; border-width: 7px 0 7px 11px; border-color: transparent transparent transparent #F2F1EC; }
