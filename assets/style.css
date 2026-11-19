@@ -119,7 +119,9 @@ img { display: block; max-width: 100%; }
   .logo-groups .logos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .logo-group.primary .logo, .logo-group.secondary .logo { width: auto; height: 48px; font-size: 10px; }
   .logo.on-light { padding: 4px 6px; }
-  .logo-group .logo.wide, .logo-group.secondary .logo.wide { grid-column: span 2; width: auto; }
+  .logo-group .logo.wide, .logo-group.primary .logo.wide, .logo-group.secondary .logo.wide { grid-column: span 2; width: auto; min-width: 0; }
+  .logo-groups .logos { gap: 10px; }
+  .logo-groups .logo.on-light { padding: 8px 12px; }
 }
 .logo-group { display: flex; flex-direction: column; gap: 10px; }
 .logos { display: flex; flex-wrap: wrap; gap: 12px; }
