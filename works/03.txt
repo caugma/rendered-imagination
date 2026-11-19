@@ -4,37 +4,37 @@
 #  # 으로 시작하는 줄은 메모라서 사이트에 나오지 않아요.
 # ─────────────────────────────────────────────
 
-title: [Work Title]
-artist: [Artist Name]
-affiliation: [Affiliation]
+title: Hoon's Reminiscence
+title_ko: 훈의 회상
+artist: Sanghoon Lee
+affiliation: Graduate School of Advanced Imaging Science, Chung-Ang University
 
-# 다음 셋 중 하나를 그대로 복사해서 쓰세요:
-#   Image Series  /  Moving Image / Video  /  Interactive / Immersive Media
-category: Interactive / Immersive Media
+# 다음 둘 중 하나를 그대로 복사해서 쓰세요:
+#   Moving Image / Video  /  Interactive / Immersive Media
+category: Moving Image / Video
 
 year: 2026
-# 형식. 상영 시간이 있으면 여기에 같이 적어요.
-format: [e.g. Real-time interactive installation, 3 screens]
-technologies: [Tool 1], [Tool 2], [Tool 3]
+format: Single-channel video, FHD (1920×1080), color, stereo sound, 4 min 29 sec
+technologies: Toonkit, Gemini Nano Banana 2, Gemini 3.8 Flash
 
-# 영상 주소 (YouTube 또는 Vimeo). 설치 장면이나 체험 기록 영상을 넣어요. 작품 페이지 맨 위에 나와요.
+# 영상 주소 (YouTube 또는 Vimeo). 작품 페이지 맨 위에 영상이 나와요.
 video:
 # 목록 카드 이미지. 영상이 있어도 꼭 넣어요. 영상이 없으면 페이지 맨 위에도 이 이미지가 나와요.
 main_image: main.jpg
 # 추가 이미지 (쉼표로 구분, 비우면 "More images"가 숨겨져요)
 images: 02.jpg, 03.jpg, 04.jpg
 # 초록 PDF 파일 이름 (비우면 버튼이 숨겨져요)
-abstract_pdf:
+abstract_pdf: abstract.pdf
 ---
 
 ## Work Description
 
-[Content, format and the main visual or experiential features of the work. Two or three short paragraphs.]
+"Hoon's Reminiscence" is an autobiographical short animated film created with generative AI, depicting the author's ordinary life from childhood to the present. To deepen immersion in the theme of reminiscence, it integrates targeted homages throughout the narrative. The opening and ending use gentle piano melodies to homage the bittersweet epilogue at Seb's in La La Land. The main narrative omits dialogue and spectacle, instead homaging Hiroshi Nohara's retrospective montage from Crayon Shin-chan to capture an everyday life. Together, these elements frame an evocative exploration of personal memory through an AI pipeline.
 
 ## Media Technology and Production
 
-[Broadcasting and media technologies, AI tools, software and production methods used in the work.]
+"Hoon's Reminiscence" departed from traditional workflows by employing an AI-driven pipeline. Gemini refined the narrative and structured the storyboard by merging stylistic motifs with the core plot. Nano Banana 2 synthesized consistent, Van Gogh-style age-specific character sheets from reference photos, overcoming typical frame-to-frame consistency limitations. Finally, ToonKit integrated these elements, applying procedural scene synthesis, style parameters, and iterative frame-level editing to ensure seamless global continuity.
 
 ## Presentation and Experience
 
-[How the work is presented, exhibited or experienced — including how to view it online.]
+"Hoon's Reminiscence" is designed for continuous looping on large-scale LED displays or projection systems. The three-minute audiovisual experience guides viewers through a temporal arc, transitioning from the present into a chronological retrospective and returning to the opening scene.

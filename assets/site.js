@@ -144,6 +144,11 @@
     }
     return null;
   }
+  // the Korean title, unless it just repeats the English one
+  function koTitle(f) {
+    var ko = (f.title_ko || '').trim();
+    return ko && ko.toLowerCase() !== (f.title || '').trim().toLowerCase() ? ko : '';
+  }
   // the image a work shows on its card
   function cardImage(w) {
     var f = w.fields;
@@ -152,12 +157,23 @@
 
   /* ---------- the halftone pattern: flowing waves, ripples under the pointer ---------- */
 
-  function pattern(canvas, accent, seed) {
-    var S = 16, COLS = 34, ROWS = 26, W = S * COLS, H = S * ROWS;
+  // The canvas fills its host (the hero section) and redraws at the host's size.
+  function pattern(canvas, accent, seed, host) {
+    host = host || canvas;
+    var S, COLS, ROWS, W, H, ax, ay, bx, by, narrow;
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = W * dpr; canvas.height = H * dpr;
     var ctx = canvas.getContext('2d');
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    function size() {
+      W = Math.max(1, canvas.clientWidth); H = Math.max(1, canvas.clientHeight);
+      narrow = W < 700;
+      S = narrow ? 14 : 18;
+      COLS = Math.ceil(W / S) + 1; ROWS = Math.ceil(H / S) + 1;
+      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ax = W * (0.12 + 0.1 * Math.sin(seed)); ay = H * 1.1;
+      bx = W * (0.9 - 0.08 * Math.cos(seed * 1.3)); by = -H * 0.2;
+    }
+    size();
 
     var hex = (accent || '#FF5A36').replace('#', '');
     if (hex.length === 3) hex = hex.replace(/./g, '$&$&');
@@ -165,8 +181,6 @@
     var A = 'rgb(' + [(n >> 16) & 255, (n >> 8) & 255, n & 255].join(',') + ')';
     var G0 = [14, 15, 19], G1 = [242, 241, 236];
     var ph = seed * 0.73;
-    var ax = W * (0.12 + 0.1 * Math.sin(seed)), ay = H * 1.1;
-    var bx = W * (0.9 - 0.08 * Math.cos(seed * 1.3)), by = -H * 0.2;
 
     var pointer = { x: 0, y: 0, on: 0, target: 0 };
     var ripples = [];
@@ -181,7 +195,7 @@
           var x = (c + 0.5) * S, y = (r + 0.5) * S;
           var d1 = Math.hypot(x - ax, y - ay), d2 = Math.hypot(x - bx, y - by);
           var v = 0.5 + 0.25 * Math.sin(d1 / 22 + ph - t * 0.55) + 0.25 * Math.sin(d2 / 30 - ph * 1.7 + t * 0.35);
-          v *= 0.25 + 0.75 * Math.pow(x / W, 0.8);
+          v *= (0.25 + 0.75 * Math.pow(x / W, 0.8)) * (narrow ? 0.6 : 1);
           if (pointer.on > 0.01) {
             var dp = Math.hypot(x - pointer.x, y - pointer.y);
             v += pointer.on * 0.45 * Math.sin(dp / 14 - t * 4) * Math.exp(-dp / 120) + pointer.on * 0.25 * Math.exp(-dp / 70);
@@ -204,17 +218,21 @@
     }
 
     var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if ('ResizeObserver' in window) {
+      var rt = 0;
+      new ResizeObserver(function () { clearTimeout(rt); rt = setTimeout(function () { size(); if (still) frame(0); }, 80); }).observe(canvas);
+    }
     if (still) { frame(0); return; }
 
     function local(e) {
       var b = canvas.getBoundingClientRect();
-      return { x: (e.clientX - b.left) / b.width * W, y: (e.clientY - b.top) / b.height * H };
+      return { x: e.clientX - b.left, y: e.clientY - b.top };
     }
     var clock = 0, last = null;
-    canvas.addEventListener('pointermove', function (e) { var p = local(e); pointer.x = p.x; pointer.y = p.y; pointer.target = 1; });
-    canvas.addEventListener('pointerleave', function () { pointer.target = 0; });
-    canvas.addEventListener('pointercancel', function () { pointer.target = 0; });
-    canvas.addEventListener('pointerdown', function (e) {
+    host.addEventListener('pointermove', function (e) { var p = local(e); pointer.x = p.x; pointer.y = p.y; pointer.target = 1; });
+    host.addEventListener('pointerleave', function () { pointer.target = 0; });
+    host.addEventListener('pointercancel', function () { pointer.target = 0; });
+    host.addEventListener('pointerdown', function (e) {
       var p = local(e); pointer.x = p.x; pointer.y = p.y; pointer.target = 1;
       ripples.push({ x: p.x, y: p.y, t0: clock });
       if (ripples.length > 6) ripples.shift();
@@ -241,9 +259,9 @@
     sync();
   }
 
-  /* ---------- image-series carousel ---------- */
+  /* ---------- image carousel (main image + more images, or an image series) ---------- */
 
-  function carousel(root, entries, dir, workTitle) {
+  function carousel(entries, dir, workTitle) {
     var total = entries.length, cur = 0;
     var stage = el('div', { class: 'frame stage', tabindex: '0', role: 'region', 'aria-roledescription': 'carousel', 'aria-label': (workTitle || 'Image series') + ' — use left and right arrow keys' });
     var slot = el('div', { class: 'slot', 'aria-live': 'polite' });
@@ -262,16 +280,16 @@
       thumbs.appendChild(b);
       return b;
     });
-    root.innerHTML = '';
-    root.append(stage, bar, thumbs);
+    var wrap = el('div', { class: 'carousel' }, [stage, bar, thumbs]);
 
     function show(i) {
       cur = (i + total) % total;
       var e = entries[cur];
       slot.innerHTML = '';
       slot.appendChild(image(dir + e.file, e.title || ((workTitle || 'Image') + ' ' + (cur + 1)), 'Image coming soon', pad(cur + 1), true));
-      counter.textContent = pad(cur + 1) + ' / ' + pad(total);
+      counter.textContent = total > 1 ? pad(cur + 1) + ' / ' + pad(total) : '';
       title.textContent = e.title || '';
+      bar.hidden = !counter.textContent && !title.textContent;
       buttons.forEach(function (b, k) { b.setAttribute('aria-current', k === cur ? 'true' : 'false'); });
       var tb = buttons[cur];
       thumbs.scrollTo({ left: tb.offsetLeft - (thumbs.clientWidth - tb.offsetWidth) / 2, behavior: 'smooth' });
@@ -279,7 +297,8 @@
     }
     prev.addEventListener('click', function () { show(cur - 1); });
     next.addEventListener('click', function () { show(cur + 1); });
-    if (total < 2) { prev.hidden = next.hidden = true; thumbs.hidden = true; }
+    show(0);
+    if (total < 2) { prev.hidden = next.hidden = true; thumbs.hidden = true; return wrap; }
 
     document.addEventListener('keydown', function (e) {
       var t = e.target.tagName;
@@ -294,7 +313,7 @@
       var dx = e.clientX - sx, dy = e.clientY - sy; sx = null;
       if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) show(cur + (dx < 0 ? 1 : -1));
     });
-    show(0);
+    return wrap;
   }
 
   /* ---------- shared header / footer ---------- */
@@ -311,7 +330,10 @@
     var groups = $('#logo-groups');
     if (groups) {
       groups.innerHTML = '';
-      [['Organized by', s.organized_by], ['Co-organized by', s.co_organized_by]].forEach(function (g) {
+      var defs = (s.exhibition_organized_by || s.in_conjunction_with)
+        ? [['Exhibition organized by', s.exhibition_organized_by, 'primary'], ['In conjunction with ', s.in_conjunction_with, 'secondary']]
+        : [['Organized by', s.organized_by, 'primary'], ['Co-organized by', s.co_organized_by, 'primary']];
+      defs.forEach(function (g) {
         var entries = (Array.isArray(g[1]) ? g[1].join(',') : (g[1] || '')).match(/[^,()]+(\([^)]*\))?/g) || [];
         var logos = el('div', { class: 'logos' });
         entries.forEach(function (raw) {
@@ -324,11 +346,17 @@
           if (file) {
             var img = el('img', { src: 'images/logos/' + file, alt: name });
             img.addEventListener('error', showName);
+            img.addEventListener('load', function () { if (img.naturalWidth / img.naturalHeight > 3) box.classList.add('wide'); });
             box.appendChild(img);
           } else showName();
           logos.appendChild(box);
         });
-        if (logos.children.length) groups.appendChild(el('div', { class: 'logo-group' }, [el('span', { class: 'eyebrow', text: g[0] }), logos]));
+        var label = el('span', { class: 'eyebrow', text: g[0] });
+        if (g[2] === 'secondary') {
+          var conf = el('strong', { text: s.conference_name || 'the conference' });
+          label.appendChild(s.conference_url ? el('a', { class: 'conf-link', href: s.conference_url, target: '_blank', rel: 'noopener' }, [conf, document.createTextNode(' ↗')]) : conf);
+        }
+        if (logos.children.length) groups.appendChild(el('div', { class: 'logo-group ' + g[2] }, [label, logos]));
       });
     }
     text('foot-line', [s.conference_name, s.conference_full_name, s.conference_dates].filter(Boolean).join(' · '));
@@ -361,10 +389,19 @@
       if (words.length === 2) { h1.append(words[0], el('br'), words[1]); } else h1.textContent = s.title || '';
       text('f-exhibit', s.exhibition_dates); text('f-session', s.session_date); text('f-venue', [s.venue, s.venue_detail && s.venue_detail.split(',')[0]].filter(Boolean).join(', '));
       text('s-date', s.session_date_long); text('s-time', s.session_time); text('s-venue', s.venue); text('s-venue2', s.venue_detail);
+      // "Name (Affiliation), Name (Affiliation)"
+      var chairs = (Array.isArray(s.session_chairs) ? s.session_chairs.join(',') : (s.session_chairs || '')).match(/[^,()]+(\([^)]*\))?/g) || [];
+      var box = $('#s-chairs'); box.innerHTML = '';
+      chairs.forEach(function (raw) {
+        var m = raw.trim().match(/^(.*?)\s*(?:\(([^)]*)\))?$/);
+        if (!m || !m[1]) return;
+        box.appendChild(el('div', { class: 'chair' }, [el('span', { class: 'chair-name', text: m[1].trim() }), m[2] ? el('span', { class: 'chair-aff', text: m[2].trim() }) : null]));
+      });
+      if (!box.children.length) box.parentNode.remove();
       var secs = sections(doc.body);
       $('#about-body').innerHTML = markdown(section(secs, ['about']));
       $('#presentation-body').innerHTML = markdown(section(secs, ['presentation', 'live', 'session']));
-      pattern($('#pattern'), s.accent_color, parseFloat(s.pattern_seed) || 7);
+      pattern($('#pattern'), s.accent_color, parseFloat(s.pattern_seed) || 7, $('#hero'));
 
       return loadWorks(list(s.works)).then(function (works) { renderGrid(works, s); });
     }).catch(function (e) { fail('main', e); });
@@ -382,14 +419,15 @@
           el('div', { class: 'card-meta' }, [
             el('span', { class: 'card-cat', text: f.category }),
             el('span', { class: 'card-title', text: f.title || 'Untitled' }),
+            koTitle(f) ? el('span', { class: 'card-title-ko', lang: 'ko', text: koTitle(f) }) : null,
             el('span', { class: 'card-artist', text: f.artist })
           ])
         ]));
       });
       if (filter === 'all') grid.appendChild(el('a', { class: 'live-card', href: '#presentation' }, [
         el('span', { class: 'eyebrow', text: 'Conference presentation' }),
-        el('strong', { text: 'Meet the creators at ' + (s.conference_name || 'the conference') }),
-        el('span', { text: [s.session_date, s.venue].filter(Boolean).join(' · ') + ' →' })
+        el('strong', { text: 'Oral presentations in the ' + (s.conference_name || 'conference') + ' Special Session on ' + ((s.subtitle || '').split('·')[0].trim() || 'Creative Works with Technology') }),
+        el('span', { text: [s.session_date, [(s.venue || '').split(',')[0], (s.venue_detail || '').split(',')[0].replace(/University/, 'Univ.')].filter(Boolean).join(', ')].filter(Boolean).join(' · ') + ' →' })
       ]));
       if (!shown.length) grid.appendChild(el('p', { class: 'empty', text: 'No works in this category.' }));
       buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.filter === filter)); });
@@ -419,17 +457,20 @@
         text('w-cat', f.category); text('w-year', f.year);
         if (!f.year) $('#w-year').remove();
         text('w-title', f.title); text('w-artist', f.artist); text('w-aff', f.affiliation);
+        text('w-title-ko', koTitle(f));
+        if (!koTitle(f)) $('#w-title-ko').remove();
 
-        var media = $('#w-media'), entries = imageEntries(f.images), embed = videoEmbed(f.video);
-        if (isSeries && entries.length) {
-          media.classList.add('series');
-          carousel(media, entries, dir, f.title);
-        } else {
-          var frame = el('div', { class: 'frame' });
-          if (embed) frame.appendChild(el('iframe', { src: embed, title: (f.title || 'Work') + ' — video', allow: 'autoplay; fullscreen; picture-in-picture', loading: 'lazy' }));
-          else frame.appendChild(image(f.main_image ? dir + f.main_image : '', f.title, 'Main image coming soon', '', true));
-          media.innerHTML = ''; media.appendChild(frame);
+        // Top of the page: a video if there is one, then every image in one carousel.
+        // Image series: the images. Other works: the main image first (unless a video
+        // stands in for it), then the more images.
+        var media = $('#w-media'), embed = videoEmbed(f.video), entries = imageEntries(f.images);
+        if (!isSeries && f.main_image && !embed) entries.unshift({ file: f.main_image, title: '' });
+        media.innerHTML = '';
+        if (embed) {
+          media.appendChild(el('div', { class: 'frame' }, [el('iframe', { src: embed, title: (f.title || 'Work') + ' — video', allow: 'autoplay; fullscreen; picture-in-picture', loading: 'lazy' })]));
         }
+        if (entries.length) media.appendChild(carousel(entries, dir, f.title));
+        else if (!embed) media.appendChild(el('div', { class: 'frame' }, [placeholder('Main image coming soon')]));
 
         $('#w-text').innerHTML = markdown(w.body);
 
@@ -442,15 +483,6 @@
         text('d-live2', [s.venue, s.venue_detail].filter(Boolean).join(', '));
         var pdf = $('#d-pdf');
         if (f.abstract_pdf) pdf.href = dir + f.abstract_pdf; else pdf.remove();
-
-        // "More images" — for video and interactive works only; a series shows everything in its carousel
-        var gal = $('#gallery-grid'); gal.innerHTML = '';
-        if (!isSeries) entries.forEach(function (e, i) {
-          var a = el('a', { href: dir + e.file, target: '_blank', rel: 'noopener', 'aria-label': (e.title || 'Image ' + (i + 1)) + ' (opens full size)' });
-          a.appendChild(image(dir + e.file, e.title || (f.title || '') + ' — image ' + (i + 1), 'Image coming soon', pad(i + 1)));
-          gal.appendChild(a);
-        });
-        if (!gal.children.length) $('#gallery').remove();
 
         // previous / next
         var prev = pos > 0 ? order[pos - 1] : null, next = pos >= 0 && pos < order.length - 1 ? order[pos + 1] : null;

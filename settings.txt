@@ -7,28 +7,32 @@
 title: Rendered Imagination
 label: IWAIT 2027 · SPECIAL SESSION
 subtitle: Creative Works with Technology · Online Exhibition
-intro: Seven works made with generative AI, digital video, real-time graphics, XR and interactive media, presented online and in a live session at IWAIT 2027.
+intro: Seven works made with generative AI, digital video, real-time graphics, XR and interactive media, presented online and at the IWAIT 2027 conference.
 
 conference_name: IWAIT 2027
 conference_full_name: International Workshop on Advanced Image Technology
 conference_dates: January 10–12, 2027 · Seoul, Korea
 # 학회 홈페이지 주소. 비워 두면 상단 메뉴에서 링크가 숨겨져요.
-conference_url:
+conference_url: https://iwait.online/
 
-exhibition_dates: Jan 10 – Mar 10, 2027
+exhibition_dates: Dec 1, 2026 – Jan 31, 2027
 session_date: Mon, Jan 11 · 14:40–16:30
 session_date_long: Monday, January 11, 2027
 session_time: 14:40–16:30 (KST)
 venue: Isambong Hall, ECC
 venue_detail: Ewha Womans University, Seoul
+# 세션 좌장: "이름 (소속)" 형식, 쉼표로 구분. 비우면 숨겨져요.
+session_chairs: Jongwon Choi (Chung-Ang University), Sanglim Han (Chung-Ang University)
 
 # 작품 순서. works 폴더 안의 파일 이름(번호)을 쉼표로 나열해요.
 works: 01, 02, 03, 04, 05, 06, 07
 
 # 로고: "기관명 (파일이름)" 형식, 쉼표로 구분. 파일은 images/logos 폴더에 올려요.
 # 파일이 아직 없으면 점선 상자에 기관명이 표시돼요.
-organized_by: KIBME (kibme.png), Kwangwoon University (kwangwoon.png)
-co_organized_by: [Co-organizer] (co-organizer.png), ITE (ite.png)
+# exhibition_organized_by: 전시를 주최하는 우리 기관 (크게 표시)
+# in_conjunction_with: 학회 쪽 기관 (작게 표시)
+exhibition_organized_by: Ministry of Education (moe.png), Seoul Metropolitan Government (seoul.png), The Seoul Institute (seoul-institute.png), Chung-Ang University ANCHOR Committee (cau-anchor.png)
+in_conjunction_with: KIBME (kibme.png), Kwangwoon University (kwangwoon.png), EiC (eic.png), ITE (ite.png), Ewha Womans University (ewha.png)
 # 로고 뒤 배경: white = 흰 상자 위에 로고 (검은 글씨 로고용), none = 배경 없음 (흰색 로고용)
 logo_background: white
 
@@ -42,8 +46,8 @@ pattern_seed: 7
 
 Rendered Imagination presents creative works produced with broadcasting and media technologies. Generative AI, digital video, real-time graphics, XR and interactive media enter the creative process not as tools alone, but as part of how each work is imagined.
 
-Organized as a special session of IWAIT 2027, the exhibition looks at how the integration of technology and creative practice expands the possibilities of media expression across three forms: image series, moving image and video, and interactive and immersive media.
+Organized as a special session of IWAIT 2027, the exhibition looks at how the integration of technology and creative practice expands the possibilities of media expression across two forms: moving image and video, and interactive and immersive media.
 
 ## Conference presentation
 
-The creators present their works in person as part of the IWAIT 2027 conference program, covering the technologies and production process behind each piece.
+The works in this exhibition were selected through the call for extended abstracts of the IWAIT 2027 Special Session on Creative Works with Technology. Each researcher presents their work as an oral presentation in the session, addressing the media technologies, AI tools and production methods behind it.
