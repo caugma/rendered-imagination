@@ -5,7 +5,7 @@
 # ─────────────────────────────────────────────
 
 title: Rendered Imagination
-label: IWAIT 2027 · SPECIAL SESSION
+label: IWAIT 2027 · AI + ART SESSION
 subtitle: Creative Works with Technology · Online Exhibition
 intro: Seven works made with generative AI, digital video, real-time graphics, XR and interactive media, presented online and at the IWAIT 2027 conference.
 
@@ -19,6 +19,8 @@ exhibition_dates: Dec 1, 2026 – Jan 31, 2027
 session_date: Mon, Jan 11 · 14:40–16:30
 session_date_long: Monday, January 11, 2027
 session_time: 14:40–16:30 (KST)
+# 세션 이름 (작품 목록의 발표 안내 카드에 쓰여요)
+session_name: AI + Art Session
 venue: Isambong Hall, ECC
 venue_detail: Ewha Womans University, Seoul
 # 세션 좌장: "이름 (소속)" 형식, 쉼표로 구분. 비우면 숨겨져요.
@@ -36,6 +38,10 @@ in_conjunction_with: KIBME (kibme.png), Kwangwoon University (kwangwoon.png), Ei
 # 로고 뒤 배경: white = 흰 상자 위에 로고 (검은 글씨 로고용), none = 배경 없음 (흰색 로고용)
 logo_background: white
 
+# 사이트 맨 아래 작은 글씨. 비우면 숨겨져요.
+acknowledgement: This research was supported by the ANCHOR through the Seoul ANCHOR Center, funded by the Ministry of Education (MOE) and the Seoul Metropolitan Government (2026-ANCHOR-01-024-06).
+copyright: © 2026 Chung-Ang University ANCHOR Committee and the artists
+
 # 디자인 (바꾸지 않아도 돼요)
 accent_color: #FF5A36
 pattern_seed: 7
@@ -50,4 +56,4 @@ Organized as a special session of IWAIT 2027, the exhibition looks at how the in
 
 ## Conference presentation
 
-The works in this exhibition were selected through the call for extended abstracts of the IWAIT 2027 Special Session on Creative Works with Technology. Each researcher presents their work as an oral presentation in the session, addressing the media technologies, AI tools and production methods behind it.
+Seven works, selected through the IWAIT 2027 AI + Art Session call. Each artist-researcher presents their work in the session, discussing the tools and methods behind it.
