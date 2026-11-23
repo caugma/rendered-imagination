@@ -371,6 +371,11 @@
       });
     }
     text('foot-line', [s.conference_name, s.conference_full_name, s.conference_dates].filter(Boolean).join(' · '));
+    ['foot-ack', 'foot-copy'].forEach(function (id, i) {
+      var node = document.getElementById(id), v = i ? s.copyright : s.acknowledgement;
+      if (!node) return;
+      if (v) node.textContent = v; else node.remove();
+    });
   }
 
   function loadWorks(ids) {
@@ -437,7 +442,7 @@
       });
       if (filter === 'all') grid.appendChild(el('a', { class: 'live-card', href: '#presentation' }, [
         el('span', { class: 'eyebrow', text: 'Conference presentation' }),
-        el('strong', { text: 'Oral presentations in the ' + (s.conference_name || 'conference') + ' Special Session on ' + ((s.subtitle || '').split('·')[0].trim() || 'Creative Works with Technology') }),
+        el('strong', { text: 'Oral presentations in the ' + (s.conference_name || 'conference') + ' ' + (s.session_name || 'AI + Art Session') }),
         el('span', { text: [s.session_date, [(s.venue || '').split(',')[0], (s.venue_detail || '').split(',')[0].replace(/University/, 'Univ.')].filter(Boolean).join(', ')].filter(Boolean).join(' · ') + ' →' })
       ]));
       if (!shown.length) grid.appendChild(el('p', { class: 'empty', text: 'No works in this category.' }));
